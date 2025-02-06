@@ -27,7 +27,12 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
-
+      
+      - name: upload artifact
+        uses: actions/uploads-artifact@4.6.0
+        with:
+            name: my-files
+            path: ${{github.workspace}}
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
