@@ -1,27 +1,33 @@
-name: issue-actions
-
+name: Simple-demo
 on:
-  issues:
-    branches: opened
-  workflow_dispatch:
-
+  push:
+    branches: main
+  workflow_dispatch: 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4.2.2
+      - name: run a sample action
+        run: echo hello world
 
-      - name: Run a one-line script
-        run: echo Hello, world!
-      
-      - name: upload artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: my-files
+          name: build-artifact
           path: ${{ github.workspace }}
 
-      - name: Run a multi-line script
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Deploy to server
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo "Deploying to server..."
+          # Add your deployment commands here
+          # For example, using SSH to deploy:
+          # ssh user@your-server "cd /path/to/app && git pull && npm install && pm2 restart app"
+
